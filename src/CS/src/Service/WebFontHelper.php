@@ -34,10 +34,11 @@ class WebFontHelper extends Singleton
 
     public static function mirror($oldValue, $value)
     {
-        $fonts = array_map(function($v){
-            return str_replace('cs_field_font_', '', $v);
-        }, array_keys($value));
+        return static::downloadFiles($value);
+    }
 
+    public static function downloadFiles($config)
+    {
         $app = Application::getInstance();
 
         $localDirectory = $app->getLocalDirectory();
@@ -46,7 +47,11 @@ class WebFontHelper extends Singleton
 
         $css = '';
 
-        foreach ($fonts as $font) {
+        foreach ($config as $font => $enabled) {
+            if (!$enabled) {
+                continue;
+            }
+
             $response = wp_remote_get(sprintf('%s/%s', self::API_BASE, $font));
 
             if (($response['response']['code'] ?? '') != 200) {
@@ -102,5 +107,7 @@ CSS;
         }
 
         file_put_contents($localCss, $css);
+
+        return $localCss;
     }
 }

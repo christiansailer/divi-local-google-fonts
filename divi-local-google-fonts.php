@@ -2,7 +2,7 @@
 /**
  * @wordpress-plugin
  * Plugin Name:       Divi local Google fonts
- * Description:       loads google fonts local
+ * Description:       mirrors google fonts from webfonthelper and loads from the same domain
  * Version:           1.0
  * Author:            Christian Sailer
  * Author URI:        https://christian-sailer.de

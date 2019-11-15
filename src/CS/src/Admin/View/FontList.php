@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CS\Admin\View;
 
+use CS\Admin\Admin;
 use CS\Service\WebFontHelper;
 
 class FontList
 {
-    const REQUIRED_CAPABILITY = 'manage_options';
-
-    const OPTION_NAME = 'cs_options';
+    const SLUG = 'cs-local-font-list';
 
     public function registerSettings()
     {
@@ -83,21 +82,19 @@ class FontList
 
     public function adminMenuHook()
     {
-        add_menu_page(__('Lokale Fonts', CS_LOCAL_FONT_TEXT_DOMAIN), 'Profile', self::REQUIRED_CAPABILITY, __FILE__, 'profile');
-
-        $hook = add_submenu_page(
-            __FILE__,
+        add_submenu_page(
+            Admin::PARENT_MENU_SLUG,
             __('Schriftarten', CS_LOCAL_FONT_TEXT_DOMAIN),
             __('Schriftarten', CS_LOCAL_FONT_TEXT_DOMAIN),
-            self::REQUIRED_CAPABILITY,
-            'cs-font-list',
+            'manage_options',
+            self::SLUG,
             [$this, 'render']
         );
     }
 
     public function render()
     {
-        if (!current_user_can( self::REQUIRED_CAPABILITY) ) {
+        if (!current_user_can( 'manage_options')) {
             return;
         }
 
